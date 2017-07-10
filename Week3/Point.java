@@ -40,7 +40,7 @@ public class Point implements Comparable<Point>{
         if (this.x == that.x)
             return Double.POSITIVE_INFINITY;
         double slope = (double)(that.y - this.y)/ (that.x - this.x);
-        return slope == 0 ? 0.0: slope;
+        return slope == 0 ? +0.0f: slope;
     }
     
     public Comparator<Point> slopeOrder(){
@@ -49,9 +49,15 @@ public class Point implements Comparable<Point>{
     
     private class SlopeOrder implements Comparator<Point>{
         public int compare(Point p1, Point p2){
-            double diff = slopeTo(p1) - slopeTo(p2);
-            if (diff == 0) return 0;
-            return diff < 0 ? -1: 1;
+            double s1 = slopeTo(p1);
+            double s2 = slopeTo(p2);
+            /* This causes error since 
+             * Double.NEGATIVE_INFINITY - Double.NEGATIVE_INFINITY = NaN.(not 0)
+             * double diff = slopeTo(p1) - slopeTo(p2);
+             * if (diff == 0) return 0;
+             * return diff < 0 ? -1: 1;
+             */
+            return Double.compare(s1,s2);
         }
     }
  
@@ -63,6 +69,7 @@ public class Point implements Comparable<Point>{
         // Test SlopeOrder
         Point p3 = new Point(5,5);
         StdOut.println(p3.slopeOrder().compare(p2,p1));
+        StdOut.println(p1.compareTo(null));
     }
     
     
