@@ -1,60 +1,88 @@
 import java.lang.StringBuilder;
 public class Board {
     private int[][] b;
+    private final int n;
     public Board(int[][] blocks){           // construct a board from an n-by-n array of blocks
         // (where blocks[i][j] = block in row i, column j)
-        int l = blocks.length;
-        b = new int[l][l];
-        for (int i = 0; i< l; i++)
-            for (int j=0; j<l; j++)
+        n = blocks.length;
+        b = new int[n][n];
+        for (int i = 0; i< n; i++)
+            for (int j=0; j<n; j++)
             b[i][j] = blocks[i][j];
     }
     
     // board dimension n
-    public int dimension(){                 
-
+    public int dimension(){
+        return n;
     }
     
     // number of blocks out of place
-    public int hamming(){                   
-
-        
+    public int hamming(){
+        int num = 0;
+        int ct = 0;
+        for (int i = 0; i< n; i++){
+            for (int j=0; j<n; j++){
+                ct++;
+                if (b[i][j] == 0) continue;
+                if (b[i][j] != ct) num++;
+                
+            }
+        }
+        return num;
     }
     
     // sum of Manhattan distances between blocks and goal
-    public int manhattan()    {             
-
+    public int manhattan(){
+        int dis = 0;
+        for (int i = 0; i < n; i++){
+            for (int j=0; j<n; j++){
+                int num = b[i][j];
+                if (num == 0) continue;
+                if (num % n == 0){
+                    dis += Math.abs(n-1-j) + Math.abs(num/n -1 -i);
+                    continue;
+                }
+                int hor = Math.abs(num % n -1 - j);
+                int ver = Math.abs(num/n - i);
+                dis += hor + ver;
+            }
+        }
+        return dis;
     }
     
+    /*
     // is this board the goal board?
-    public boolean isGoal(){                
-
+    public boolean isGoal(){
+        return hamming() == 0;
     }
     
     // a board that is obtained by exchanging any pair of blocks
-    public Board twin(){                    
-
+    public Board twin(){          
+        
     }
     
     // does this board equal y?
-    public boolean equals(Object y)   {     
-
+    public boolean equals(Object y)   {
+        
     }
     
     // all neighboring boards
-    public Iterable<Board> neighbors(){     
-
+    public Iterable<Board> neighbors(){
+        
     }
     
+    */
     
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(b.length + "\n");
-        for(int i=0; i < blocks.length;i++){
-            for (int j=0; j < blocks.length; j++){
-                sb.append(" " + blocks[i][j] + " ");
+        sb.append(n + "\n");
+        for(int i=0; i < n;i++){
+            for (int j=0; j < n; j++){
+                //sb.append(" " + blocks[i][j] + " ");
+                sb.append(String.format("%2d ", b[i][j]));
             }
             sb.append("\n");
         }
         return sb.toString();
     }
+}
