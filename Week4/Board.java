@@ -1,14 +1,25 @@
 import java.lang.StringBuilder;
 public class Board {
     private int[][] b;
-    private final int n;
+    private final int n; // length
+    private final int md;
+    private final int hd;
+    private final int emp_x;
+    private final int emp_y;
+    
     public Board(int[][] blocks){           // construct a board from an n-by-n array of blocks
         // (where blocks[i][j] = block in row i, column j)
         n = blocks.length;
         b = new int[n][n];
-        for (int i = 0; i< n; i++)
-            for (int j=0; j<n; j++)
-            b[i][j] = blocks[i][j];
+        for (int i = 0; i< n; i++){
+            for (int j=0; j<n; j++){
+                b[i][j] = blocks[i][j];
+                if (b[i][j] == 0){
+                    emp_x = i;
+                    emp_y = j;
+                }
+            }
+        }
     }
     
     // board dimension n
@@ -18,6 +29,7 @@ public class Board {
     
     // number of blocks out of place
     public int hamming(){
+        if (hd != Null) return hd;
         int num = 0;
         int ct = 0;
         for (int i = 0; i< n; i++){
@@ -28,11 +40,13 @@ public class Board {
                 
             }
         }
-        return num;
+        hd = num;
+        return hd;
     }
     
     // sum of Manhattan distances between blocks and goal
     public int manhattan(){
+        if (md != Null) return md;
         int dis = 0;
         for (int i = 0; i < n; i++){
             for (int j=0; j<n; j++){
@@ -47,7 +61,8 @@ public class Board {
                 dis += hor + ver;
             }
         }
-        return dis;
+        md = dis;
+        return md;
     }
     
     
@@ -72,7 +87,42 @@ public class Board {
     
     // all neighboring boards
     public Iterable<Board> neighbors(){
+        Iterable<Board> queue = new Queue<Board>();
+        boolean b_left = true; // switch with left
+        boolean b_right = true; // switch with right
+        boolean b_top = true; // switch with top
+        boolean b_bot = true; // switch with bot
+        if(emp_x == 0) b_left = false;
+        if (emp_x == n-1) b_right = false;
+        if (emp_y == 0) b_top = false;
+        if (emp_y == n-1) b_bot = false;
         
+        
+        int [][] temp;
+        if (b_left){
+            temp = b.clone();
+            temp[emp_x][emp_y] = temp[emp_x-1][emp_y];
+            temp[emp_x-1][emp_y] = 0;
+            queue.add(new Board(temp));
+        }
+        if (b_right){
+            temp = b.clone();
+            temp[emp_x][emp_y] = temp[emp_x+1][emp_y];
+            temp[emp_x+1][emp_y] = 0;
+            queue.add(new Board(temp));
+        }
+        if (b_top){
+            temp = b.clone();
+            temp[emp_x][emp_y] = temp[emp_x][emp_y-1];
+            temp[emp_x][emp_y-1] = 0;
+            queue.add(new Board(temp));
+        }        
+        if (b_bot){
+            temp = b.clone();
+            temp[emp_x][emp_y] = temp[emp_x][emp_y+1];
+            temp[emp_x][emp_y+1] = 0;
+            queue.add(new Board(temp));
+        }
     }
     
     
