@@ -50,7 +50,7 @@ public class Board {
         return dis;
     }
     
-    /*
+    
     // is this board the goal board?
     public boolean isGoal(){
         return hamming() == 0;
@@ -63,7 +63,11 @@ public class Board {
     
     // does this board equal y?
     public boolean equals(Object y)   {
-        
+        if (y == this) return true;
+        if (y == null) return false;
+        if (y.getClass() != this.getClass()) return false;
+        Board that = (Board) y;
+        return that.toString().equals(this.toString());
     }
     
     // all neighboring boards
@@ -71,7 +75,7 @@ public class Board {
         
     }
     
-    */
+    
     
     public String toString(){
         StringBuilder sb = new StringBuilder();

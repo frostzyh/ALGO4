@@ -2,6 +2,8 @@ import java.lang.IllegalArgumentException;
 import edu.princeton.cs.algs4.MinPQ;
 
 public class Solver {
+    
+    // Initial search node (initial board, 0 moves, null previous search node). Add to priority queue.
     public Solver(Board initial){           // find a solution to the initial board (using the A* algorithm)
     }
     public boolean isSolvable(){            // is the initial board solvable?
