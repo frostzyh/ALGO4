@@ -1,25 +1,39 @@
 import java.lang.StringBuilder;
+import java.util.LinkedList;
+
 public class Board {
     private int[][] b;
     private final int n; // length
-    private final int md;
-    private final int hd;
+    private Integer md;
+    private Integer hd;
     private final int emp_x;
     private final int emp_y;
     
     public Board(int[][] blocks){           // construct a board from an n-by-n array of blocks
         // (where blocks[i][j] = block in row i, column j)
+        md = null;
+        hd = null;
+        
         n = blocks.length;
         b = new int[n][n];
+        
+        int e_x = -1;
+        int e_y = -1;
+        main_loop:
         for (int i = 0; i< n; i++){
             for (int j=0; j<n; j++){
                 b[i][j] = blocks[i][j];
                 if (b[i][j] == 0){
-                    emp_x = i;
-                    emp_y = j;
+                    e_x = i;
+                    e_y = j;
+                    break main_loop;
                 }
             }
         }
+        
+        emp_x = e_x;
+        emp_y = e_y;
+        
     }
     
     // board dimension n
@@ -29,7 +43,7 @@ public class Board {
     
     // number of blocks out of place
     public int hamming(){
-        if (hd != Null) return hd;
+        if (hd != null) return hd;
         int num = 0;
         int ct = 0;
         for (int i = 0; i< n; i++){
@@ -46,7 +60,7 @@ public class Board {
     
     // sum of Manhattan distances between blocks and goal
     public int manhattan(){
-        if (md != Null) return md;
+        if (md != null) return md;
         int dis = 0;
         for (int i = 0; i < n; i++){
             for (int j=0; j<n; j++){
@@ -73,7 +87,27 @@ public class Board {
     
     // a board that is obtained by exchanging any pair of blocks
     public Board twin(){          
+        int[][] temp = b.clone();
+        int p1 = -1;
+        int p2 = -1;
+        for(int i=0; i<n; i++){
+            if (b[0][i] != 0){
+                p1 = i;
+                break;
+            }
+        }
         
+        for(int i=0; i<n; i++){
+            if (b[1][i] != 0){
+                p2 = i;
+                break;
+            }
+        }
+        
+        int pp = temp[0][p1];
+        temp[0][p1] = temp[1][p2];
+        temp[1][p2] = pp;
+        return new Board(temp);
     }
     
     // does this board equal y?
@@ -87,7 +121,7 @@ public class Board {
     
     // all neighboring boards
     public Iterable<Board> neighbors(){
-        Iterable<Board> queue = new Queue<Board>();
+        LinkedList<Board> queue = new LinkedList<Board>();
         boolean b_left = true; // switch with left
         boolean b_right = true; // switch with right
         boolean b_top = true; // switch with top
@@ -123,6 +157,7 @@ public class Board {
             temp[emp_x][emp_y+1] = 0;
             queue.add(new Board(temp));
         }
+        return queue;
     }
     
     
