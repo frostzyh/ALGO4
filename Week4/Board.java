@@ -2,7 +2,7 @@ import java.lang.StringBuilder;
 import java.util.LinkedList;
 
 public class Board {
-    private int[][] b;
+    private final int[][] b;
     private final int n; // length
     private Integer md;
     private Integer hd;
@@ -26,11 +26,9 @@ public class Board {
                 if (b[i][j] == 0){
                     e_x = i;
                     e_y = j;
-                    break main_loop;
                 }
             }
         }
-        
         emp_x = e_x;
         emp_y = e_y;
         
@@ -87,9 +85,17 @@ public class Board {
     
     // a board that is obtained by exchanging any pair of blocks
     public Board twin(){          
-        int[][] temp = b.clone();
+        int[][] temp = new int[n][n];
+        
         int p1 = -1;
         int p2 = -1;
+        //Deep copy
+        for (int i =0; i < n; i++){
+            for (int j=0; j< n; j++){
+                temp[i][j] = b[i][j];
+            }
+        }
+        
         for(int i=0; i<n; i++){
             if (b[0][i] != 0){
                 p1 = i;
@@ -131,30 +137,50 @@ public class Board {
         if (emp_y == 0) b_top = false;
         if (emp_y == n-1) b_bot = false;
         
-        
         int [][] temp;
         if (b_left){
-            temp = b.clone();
-            temp[emp_x][emp_y] = temp[emp_x-1][emp_y];
-            temp[emp_x-1][emp_y] = 0;
-            queue.add(new Board(temp));
-        }
-        if (b_right){
-            temp = b.clone();
-            temp[emp_x][emp_y] = temp[emp_x+1][emp_y];
-            temp[emp_x+1][emp_y] = 0;
-            queue.add(new Board(temp));
-        }
-        if (b_top){
-            temp = b.clone();
+            temp = new int[n][n];
+            for (int i =0; i < n; i++){
+                for (int j=0; j< n; j++){
+                    temp[i][j] = b[i][j];
+                }
+            }
+            
             temp[emp_x][emp_y] = temp[emp_x][emp_y-1];
             temp[emp_x][emp_y-1] = 0;
             queue.add(new Board(temp));
-        }        
-        if (b_bot){
-            temp = b.clone();
+        }
+        if (b_right){
+            temp = new int[n][n];
+            for (int i =0; i < n; i++){
+                for (int j=0; j< n; j++){
+                    temp[i][j] = b[i][j];
+                }
+            }
             temp[emp_x][emp_y] = temp[emp_x][emp_y+1];
             temp[emp_x][emp_y+1] = 0;
+            queue.add(new Board(temp));
+        }
+        if (b_top){
+            temp = new int[n][n];
+            for (int i =0; i < n; i++){
+                for (int j=0; j< n; j++){
+                    temp[i][j] = b[i][j];
+                }
+            }
+            temp[emp_x][emp_y] = temp[emp_x-1][emp_y];
+            temp[emp_x-1][emp_y] = 0;
+            queue.add(new Board(temp));
+        }        
+        if (b_bot){
+            temp = new int[n][n];
+            for (int i =0; i < n; i++){
+                for (int j=0; j< n; j++){
+                    temp[i][j] = b[i][j];
+                }
+            }
+            temp[emp_x][emp_y] = temp[emp_x+1][emp_y];
+            temp[emp_x+1][emp_y] = 0;
             queue.add(new Board(temp));
         }
         return queue;

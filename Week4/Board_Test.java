@@ -11,10 +11,16 @@ public class Board_Test{
         for (int i = 0; i< n; i++)
             for (int j=0; j<n; j++)
             blocks[i][j] = in.readInt();
-        Board initial = new Board(blocks);
-        StdOut.println(initial);
-        StdOut.println("Manhattan distance: " + initial.manhattan());
-        StdOut.println("Hamming distance: " + initial.hamming());
-        
+        Board ini = new Board(blocks);
+        StdOut.println(ini);
+        StdOut.println("Manhattan distance: " + ini.manhattan());
+        StdOut.println("Hamming distance: " + ini.hamming());
+        StdOut.println("Is Goal?: " + ini.isGoal());
+        StdOut.println("Twin: \n" + ini.twin());
+        StdOut.println("equals: " + ini.equals(new Board(blocks)));
+        StdOut.println("Neighbors:\n");
+        for (Board b: ini.neighbors()){
+            StdOut.println(b);
+        }
     }
 }
