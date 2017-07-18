@@ -1,8 +1,12 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
+
+// % java Solver_Test Data/8puzzle/puzzle20.txt
 public class Solver_Test{
     public static void main(String[] args){
+        
+        long startTime = System.currentTimeMillis();
         // create initial board from file
         In in = new In(args[0]);
         int n = in.readInt();
@@ -23,5 +27,9 @@ public class Solver_Test{
             for (Board board : solver.solution())
                 StdOut.println(board);
         }
+        
+        
+        long totalTime = System.currentTimeMillis() - startTime;
+        System.out.println("Total Running Time: " + totalTime);
     }
 }

@@ -19,7 +19,7 @@ public class Board {
         
         int e_x = -1;
         int e_y = -1;
-        main_loop:
+        
         for (int i = 0; i< n; i++){
             for (int j=0; j<n; j++){
                 b[i][j] = blocks[i][j];
@@ -118,10 +118,21 @@ public class Board {
     
     // does this board equal y?
     public boolean equals(Object y)   {
-        if (y == this) return true;
         if (y == null) return false;
+        if (y == this) return true;
         if (y.getClass() != this.getClass()) return false;
         Board that = (Board) y;
+        if (this.md != that.md) return false;
+        /*
+        //int[][] aa = this.b;
+        //int[][] bb = that.b;
+        for(int i=0; i < n; i++){
+            for (int j =0; j < n; j++){
+                if (this.b[i][j] != that.b[i][j]) return false;
+            }
+        }
+        return true;
+        */
         return that.toString().equals(this.toString());
     }
     
@@ -132,10 +143,10 @@ public class Board {
         boolean b_right = true; // switch with right
         boolean b_top = true; // switch with top
         boolean b_bot = true; // switch with bot
-        if(emp_x == 0) b_left = false;
-        if (emp_x == n-1) b_right = false;
-        if (emp_y == 0) b_top = false;
-        if (emp_y == n-1) b_bot = false;
+        if(emp_x == 0) b_top = false;
+        if (emp_x == n-1) b_bot = false;
+        if (emp_y == 0) b_left = false;
+        if (emp_y == n-1) b_right = false;
         
         int [][] temp;
         if (b_left){
@@ -157,6 +168,7 @@ public class Board {
                     temp[i][j] = b[i][j];
                 }
             }
+            //System.out.println(emp_x + " " + emp_y);
             temp[emp_x][emp_y] = temp[emp_x][emp_y+1];
             temp[emp_x][emp_y+1] = 0;
             queue.add(new Board(temp));
