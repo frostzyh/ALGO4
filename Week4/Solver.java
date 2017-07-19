@@ -61,14 +61,6 @@ public class Solver {
         }
     }
     
-    private void helper(MinPQ<Node> queue, Node n){
-        Iterable<Board> ib = n.b.neighbors();
-        for (Board board:ib){
-            if (!board.equals(n.b))
-            queue.insert(new Node(board, n));
-        }
-    }
-    
     public boolean isSolvable(){            // is the initial board solvable?
         return isSolvable;
     }

@@ -9,29 +9,48 @@ public class Board {
     private final int emp_x;
     private final int emp_y;
     
+    /* Submission 002: 2 problems.
+     * problems: values are mutable.
+     * Solution: b[i][j] = Integer.valueOf(blocks[i][j])
+     * problem: blocks does not calculate manhattan distance when constructed.
+     * So when comparing, null would be compared and the result would always be 
+     * false which adds a lot useless Nodes in the Priority queue.
+     * (Solver:line33: !tbb.equals(prevSerchBoard)
+     * So, I changed it to calculate the distance when constructing Board object.
+     */
+    
+    
+    
     public Board(int[][] blocks){           // construct a board from an n-by-n array of blocks
         // (where blocks[i][j] = block in row i, column j)
-        md = null;
         hd = null;
         
         n = blocks.length;
         b = new int[n][n];
         
+        
+        //Calculate Manhattan and find position of 0
+        md = 0;
         int e_x = -1;
         int e_y = -1;
         
         for (int i = 0; i< n; i++){
             for (int j=0; j<n; j++){
-                b[i][j] = blocks[i][j];
+                b[i][j] = Integer.valueOf(blocks[i][j]);
                 if (b[i][j] == 0){
                     e_x = i;
                     e_y = j;
+                }
+                else if (b[i][j] % n == 0){
+                    md += Math.abs(n-1-j) + Math.abs(b[i][j]/n -1 -i);
+                }
+                else{
+                    md += Math.abs(b[i][j] % n -1 - j) + Math.abs(b[i][j]/n - i);
                 }
             }
         }
         emp_x = e_x;
         emp_y = e_y;
-        
     }
     
     // board dimension n
@@ -58,23 +77,7 @@ public class Board {
     
     // sum of Manhattan distances between blocks and goal
     public int manhattan(){
-        if (md != null) return md;
-        int dis = 0;
-        for (int i = 0; i < n; i++){
-            for (int j=0; j<n; j++){
-                int num = b[i][j];
-                if (num == 0) continue;
-                if (num % n == 0){
-                    dis += Math.abs(n-1-j) + Math.abs(num/n -1 -i);
-                    continue;
-                }
-                int hor = Math.abs(num % n -1 - j);
-                int ver = Math.abs(num/n - i);
-                dis += hor + ver;
-            }
-        }
-        md = dis;
-        return md;
+        return Integer.valueOf(md);
     }
     
     
@@ -122,8 +125,8 @@ public class Board {
         if (y == this) return true;
         if (y.getClass() != this.getClass()) return false;
         Board that = (Board) y;
-        if (this.md != that.md) return false;
-        /*
+        if (!this.md.equals(that.md)) return false;
+        
         //int[][] aa = this.b;
         //int[][] bb = that.b;
         for(int i=0; i < n; i++){
@@ -132,8 +135,8 @@ public class Board {
             }
         }
         return true;
-        */
-        return that.toString().equals(this.toString());
+        
+        //return that.toString().equals(this.toString());
     }
     
     // all neighboring boards
